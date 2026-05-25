@@ -1,0 +1,17 @@
+# =========================
+# GREEN SERVICE (HTTPD NODEPORT)
+# =========================
+apiVersion: v1
+kind: Service
+metadata:
+  name: httpd-green-service
+  namespace: production
+spec:
+  type: NodePort
+  selector:
+    app: app-green
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 80
+    nodePort: 30081

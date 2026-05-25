@@ -1,0 +1,17 @@
+# =========================
+# BLUE SERVICE (NGINX NODEPORT)
+# =========================
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-blue-service
+  namespace: production
+spec:
+  type: NodePort
+  selector:
+    app: app-blue
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 80
+    nodePort: 30080

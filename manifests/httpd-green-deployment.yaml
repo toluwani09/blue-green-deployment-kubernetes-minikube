@@ -1,0 +1,23 @@
+# =========================
+# GREEN DEPLOYMENT (HTTPD)
+# =========================
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: httpd-green
+  namespace: production
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: app-green
+  template:
+    metadata:
+      labels:
+        app: app-green
+    spec:
+      containers:
+      - name: httpd
+        image: httpd:latest
+        ports:
+        - containerPort: 80
