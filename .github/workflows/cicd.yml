@@ -1,0 +1,71 @@
+name: Kubernetes Blue-Green CI/CD Pipeline
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  validate-manifests:
+    name: Validate Kubernetes Manifests
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Install kubectl
+        run: |
+          curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+          chmod +x kubectl
+          sudo mv kubectl /usr/local/bin/
+
+      - name: Validate YAML Syntax
+        run: |
+          kubectl apply --dry-run=client -f manifests/
+
+  deploy:
+    name: Deploy to Kubernetes Cluster
+    runs-on: ubuntu-latest
+    needs: validate-manifests
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Configure Kubeconfig
+        run: |
+          mkdir -p $HOME/.kube
+          echo "${{ secrets.KUBECONFIG }}" > $HOME/.kube/config
+
+      - name: Deploy Namespace + Blue-Green Apps
+        run: |
+          kubectl apply -f manifests/namespace.yaml
+          kubectl apply -f manifests/
+
+      - name: Verify Deployment Status
+        run: |
+          kubectl get pods -n production
+          kubectl get svc -n production
+
+  switch-traffic:
+    name: Blue-Green Traffic Switch (Manual Approval Simulation)
+    runs-on: ubuntu-latest
+    needs: deploy
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Configure Kubeconfig
+        run: |
+          mkdir -p $HOME/.kube
+          echo "${{ secrets.KUBECONFIG }}" > $HOME/.kube/config
+
+      - name: Switch Service to Green (Simulated Release)
+        run: |
+          kubectl patch service nginx-blue-service -n production \
+          -p '{"spec":{"selector":{"app":"app-green"}}}'
+
+      - name: Confirm Traffic Switch
+        run: |
+          kubectl describe service nginx-blue-service -n production
