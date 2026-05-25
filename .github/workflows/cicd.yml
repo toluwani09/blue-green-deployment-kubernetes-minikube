@@ -13,15 +13,11 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Install kubectl
+      - name: Validate manifests with kubeconform
         run: |
-          curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
-          chmod +x kubectl
-          sudo mv kubectl /usr/local/bin/
-
-      - name: Validate YAML Syntax
-        run: |
-          kubectl apply --dry-run=client --validate=false -f manifests/
+          wget https://github.com/yannh/kubeconform/releases/latest/download/kubeconform-linux-amd64.tar.gz
+          tar xf kubeconform-linux-amd64.tar.gz
+          ./kubeconform manifests/*.yaml
 
   deploy:
     name: Deploy to Kubernetes Cluster
