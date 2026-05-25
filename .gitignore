@@ -1,0 +1,25 @@
+# Kubernetes / local config
+kubeconfig
+*.kubeconfig
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Terraform (if you add later)
+*.tfstate
+*.tfstate.backup
+
+# IDE files
+.vscode/
+.idea/
+
+# Temporary files
+*.tmp
+*.swp
+
+# Git secrets (VERY IMPORTANT)
+.env
