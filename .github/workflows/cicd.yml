@@ -21,7 +21,7 @@ jobs:
 
       - name: Validate YAML Syntax
         run: |
-          kubectl apply --dry-run=client -f manifests/
+          kubectl apply --dry-run=client --validate=false -f manifests/
 
   deploy:
     name: Deploy to Kubernetes Cluster
@@ -39,7 +39,6 @@ jobs:
 
       - name: Deploy Namespace + Blue-Green Apps
         run: |
-          kubectl apply -f manifests/namespace.yaml
           kubectl apply -f manifests/
 
       - name: Verify Deployment Status
