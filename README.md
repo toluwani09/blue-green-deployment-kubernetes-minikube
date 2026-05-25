@@ -13,13 +13,13 @@ Traffic is switched between environments using Kubernetes Service selectors.
 **
 CI/CD was implemented to automate the deployment process.
 
-🎯 Objectives**
+**🎯 Objectives** </br>
 Simulate production-grade deployment strategy in Kubernetes
 Implement Blue-Green deployment using Services and labels
 Demonstrate safe traffic switching and rollback strategy
 Understand trade-offs between Blue-Green, Rolling, and Canary deployments
 
-**🧱 Architecture**
+**🧱 Architecture** </br>
 Users
 ↓
 Kubernetes Service (Selector-based routing)
