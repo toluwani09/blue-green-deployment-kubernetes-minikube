@@ -10,7 +10,7 @@ Blue (NGINX - current production)
 Green (Apache HTTP Server - new release candidate) Apache HTTP Server
 
 Traffic is switched between environments using Kubernetes Service selectors.
-**
+
 CI/CD was implemented to automate the deployment process.
 
 **🎯 Objectives** </br>
@@ -20,15 +20,15 @@ Demonstrate safe traffic switching and rollback strategy
 Understand trade-offs between Blue-Green, Rolling, and Canary deployments
 
 **🧱 Architecture** </br>
-Users
-↓
-Kubernetes Service (Selector-based routing)
-↓
-Blue Deployment (NGINX) OR Green Deployment (Apache HTTPD)
+Users</br>
+↓</br>
+Kubernetes Service (Selector-based routing)</br>
+↓</br>
+Blue Deployment (NGINX) OR Green Deployment (Apache HTTPD)</br>
 
 Both environments run simultaneously inside a single Kubernetes cluster (Minikube).
 
-**⚙️ Technologies Used**
+**⚙️ Technologies Used**</br>
 Kubernetes
 Minikube
 NGINX
@@ -37,7 +37,7 @@ kubectl
 
 CI/CD (GitHub Actions) to automate deployment
 
-**📦 Deployment Strategy**
+**📦 Deployment Strategy**</br>
 Blue Environment
 NGINX deployment
 Label: app=app-blue
@@ -62,21 +62,22 @@ app: app-green
 
 This enables instant traffic redirection without downtime.
 
-🧪 Key Commands Used
+**🧪 Key Commands Used**
 
-kubectl apply -f manifests/
-kubectl get pods -n production
-kubectl get svc -n production
-kubectl delete deployment nginx-blue -n production
-**
-📸 Proof of Execution**
+kubectl apply -f manifests/</br>
+kubectl get pods -n production</br>
+kubectl get svc -n production</br>
+kubectl delete deployment nginx-blue -n production</br>
+
+
+**📸 Proof of Execution**
 
 Screenshots included:
 
-Pod creation and readiness
-Service exposure via NodePort
-Successful traffic switch from Blue → Green
-Blue environment deletion after validation
+Pod creation and readiness </br>
+Service exposure via NodePort</br>
+Successful traffic switch from Blue → Green</br>
+Blue environment deletion after validation</br>
 
 **⚠️ Key Engineering Insights**
 
